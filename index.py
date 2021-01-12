@@ -99,37 +99,28 @@ ecrireDansFichierMD("quote.md")
 lireFichierMD("quote.md")
 
 def ecrireDansFichierTXT(path):
-        truc = 'machin'
-        fichier = open('tags/tags.txt',"w")
-        allTags = soup.find_all('a', class_='tag')
-        print(allTags)
-        fichier.writelines("TOUS LES TAGS \n" )
-        for tag in allTags:
-            tagsArray = []
-            for t in tagsArray:
-                if t not in tagsArray:
-                    tagsArray += t
-                    print(tagsArray)
-            fichier.writelines(tag.contents[0] + '\n')
-        # fichier.writelines("# ------------------------------------------------------------------------- | ----------------------- | -------------------------------------- \n"  )
-        # #print(allQuote)
-        # for quote in allQuote:
-        #     citation = quote.find('span', class_="text")
-        #     author = quote.find('small', class_='author')
-        #     fichier.writelines("# "+ citation.contents[0]+" | "+author.contents[0]+" | ")
-        #     allTags = quote.find_all('a', class_='tag')
-        #     for tag in allTags:
-        #         fichier.writelines(" "+tag.contents[0])
-        #     fichier.writelines("\n\n")
-        # fichier.writelines("## bye \n"  )
-        fichier.close()
+    fichier = open('tags/tags.txt',"w")
+    allTags = soup.find_all('a', class_='tag')
+    #print(allTags)
+    fichier.writelines("Liste des tags existants \n" )
+    tagsArrayContent = []
+    tagsArrayResponse = []
+    for tag in allTags:
+        tagsArrayContent += tag
+    for t in tagsArrayContent:
+        #print(t)
+        if t not in tagsArrayResponse: 
+            tagsArrayResponse.append(t)
+    for element in tagsArrayResponse:
+            fichier.writelines(element + "\n")
+
+    fichier.writelines('\n')
+    fichier.close()
 
 def lireFichierTXT(path):
     fichier = open('quotes\quote.md',"r")
     ligne = fichier.readline()
     ligne = ligne.strip()
-    print(ligne)
-    #return ligne
     fichier.close()
 
 ecrireDansFichierTXT("tags.txt")

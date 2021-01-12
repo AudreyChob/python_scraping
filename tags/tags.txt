@@ -1,4 +1,4 @@
-TOUS LES TAGS 
+Liste des tags existants 
 change
 deep-thoughts
 thinking
@@ -15,27 +15,18 @@ books
 classic
 humor
 be-yourself
-inspirational
 adulthood
 success
 value
-life
 love
 edison
 failure
-inspirational
 paraphrased
 misattributed-eleanor-roosevelt
-humor
 obvious
 simile
-love
-inspirational
-life
-humor
-books
 reading
 friendship
 friends
 truth
-simile
+
