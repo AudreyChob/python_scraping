@@ -3,10 +3,11 @@ from bs4 import BeautifulSoup
 import urllib.request
 import csv
 
+from openpyxl import Workbook
+
 urlpage = 'http://quotes.toscrape.com/'
 page = urllib.request.urlopen(urlpage)
 soup = BeautifulSoup(page, 'html.parser')
-put = False
 #print(soup)
 
 # tag = soup.span
@@ -71,42 +72,47 @@ def lireFichierTXT(path):
         ligne = fichier.readline()
         ligne = ligne.strip()
         fichier.close()
+
+def ecrireDansFichierXLS(path):  
+        # fichier = open("tags/tag.txt","w")
+        allAuthors = soup.find_all('small', class_='author')
+        tableauth = []  
+        tablerepauth = []
+        for auth in allAuthors:
+                tableauth += auth
+        for auto in tableauth:
+                if auto not in tablerepauth:
+                        tablerepauth.append(auto) 
+                        auto = auto.string.replace(' ', '-').replace('.', '').replace('é', 'e').replace('è', 'e')
+                        urlauth = 'http://quotes.toscrape.com/author/'+auto+'/'
+                        pageauth = urllib.request.urlopen(urlauth)
+                        soupauth = BeautifulSoup(pageauth, 'html.parser')  
+                        authorname = soupauth.find('h3', class_='author-title')
+                        authorborndate = soupauth.find('span', class_="author-born-date")
+                        authorborncity = soupauth.find('span', class_="author-born-location")
+                        authordesc = soupauth.find('div', class_="author-description")
+                        if authorborndate.contents != []:
+                                print(authorname.contents[0])
+                                print(authorborndate.contents[0])
+                                print(authorborncity.contents[0])
+                                print(authordesc.contents[0])
+
+             
+
+        
+
+        # fichier.writelines("bye bye ! ")
+        # fichier.close()
+           
+# def lireFichierXLS(path):
+#         fichier = open('tags/tag.txt',"r")
+#         ligne = fichier.readline()
+#         ligne = ligne.strip()
+#         fichier.close()
  
 ecrireDansFichierMD("quote.md")
 lireFichierMD("quote.md")
 ecrireDansFichierTXT("tag.txt")
 lireFichierTXT("tag.txt")
+ecrireDansFichierXLS('truc')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Table = []
-
-# for quote in allQuote:
-#         Table += allCitation.contents
-#         Table += allAuthors.contents
-        # allTags = quote.find_all('a', class_='tag')
-        # for tag in allTags:
-        #     Table += tag.contents
-
-
-
-# for author in allAuthors:
-#     #print(author.string)
-
-
-# for tag in allTags:
-#     #print(tag.string)
-
-#print(Table)
