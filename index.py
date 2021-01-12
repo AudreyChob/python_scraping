@@ -21,9 +21,9 @@ soup = BeautifulSoup(page, 'html.parser')
 allQuote = soup.find_all('div', class_="quote")
 
 tag3 = soup.find_all("span")
-allCitation = soup.find_all('span', class_="text")
-allAuthors = soup.find('small', class_='author')
-allTags = soup.find_all('a', class_='tag')
+# allCitation = soup.find_all('span', class_="text")
+# allAuthors = soup.find('small', class_='author')
+#allTags = soup.find_all('a', class_='tag')
  
 # ecrire dans un fichier
 def ecrireDansFichier(path):
@@ -31,12 +31,13 @@ def ecrireDansFichier(path):
         fichier.writelines("# Citation | Author | Tags\n"  )
         fichier.writelines("# ------------------------------------------------------------------------- | ----------------------- | -------------------------------------- \n"  )
         for quote in allQuote:
-                for Citation in allCitation:
-                        fichier.writelines("# "+Citation.string+" | "+allAuthors.contents[0]+" | ")
-                        allTags = quote.find_all('a', class_='tag')
-                        for tag in allTags:
-                         fichier.writelines(" "+tag.contents[0])
-                        fichier.writelines("\n")
+                allCitation = quote.find('span', class_="text")
+                allAuthors = quote.find('small', class_='author')
+                fichier.writelines("# "+allCitation.contents[0]+" | "+allAuthors.contents[0]+" | ")
+                allTags = quote.find_all('a', class_='tag')
+                for tag in allTags:
+                        fichier.writelines(" "+tag.contents[0])
+                fichier.writelines("\n")
         fichier.writelines("## bye \n"  )
         fichier.close()
  
