@@ -1,14 +1,13 @@
 # import libraries
 from bs4 import BeautifulSoup
 import urllib.request
-import csv
-import os.path
+from openpyxl import Workbook
 
 # #specifier l' url
 urlpage = 'http://quotes.toscrape.com/'
 page = urllib.request.urlopen(urlpage)
 soup = BeautifulSoup(page, 'html.parser')
-
+wb = Workbook()
 #print(soup)
 
 # tag = soup.span
@@ -64,7 +63,7 @@ Table = []
 
 
 allQuote = soup.find_all('div', class_="quote")
-tag3 = soup.find_all("span")
+# tag3 = soup.find_all("span")
 
 
 # ecrire dans un fichier
@@ -125,3 +124,52 @@ def lireFichierTXT(path):
 
 ecrireDansFichierTXT("tags.txt")
 lireFichierTXT("tags.txt")
+
+def getAuthorsList(): 
+    allAuthorsList = []
+    authorsList = []
+    allAuthors = soup.find_all('small', class_='author')
+    for a in allAuthors:
+        allAuthorsList += a
+        #print(allAuthorsList)
+    for author in allAuthorsList:
+        if author not in authorsList:
+            authorsList.append(author)
+            #print(authorsList)
+    return authorsList
+        # auteur = author.string.replace(' ', '-')
+        # print(auteur)
+        # urlpageAuthor = 'http://quotes.toscrape.com/author/'+auteur+'/'
+        # pageAuthor = urllib.request.urlopen(urlpageAuthor)
+        # soupAuthor = BeautifulSoup(pageAuthor, 'html.parser')
+        # #print(soupAuthor)
+
+getAuthorsList()  
+
+
+def writeAuthorDetails():
+    authorList = getAuthorsList()
+    #print(authorList)
+    for author in authorList:
+        auteur = author.string.replace(' ', '-').replace('.','').replace("é", "e").replace("è", "e").replace("ë", "e").replace("ê", "e")
+        #print(auteur)
+        urlpageAuthor = 'http://quotes.toscrape.com/author/'+auteur+'/'
+        pageAuthor = urllib.request.urlopen(urlpageAuthor)
+        soupAuthor = BeautifulSoup(pageAuthor, 'html.parser')
+        # print(soupAuthor)
+        authorDetails = soupAuthor.find('div', class_="author-details")
+        # print(authorDetails.contents)
+        authorName = authorDetails.find('h3', class_="author-title")
+        #print(authorName.contents[0])
+        authorBorn = authorDetails.find('span', class_="author-born-date")
+        authorBornLocation = authorDetails.find('span', class_="author-born-location")
+        authorDescript = authorDetails.find('div', class_="author-description")
+        if authorBorn.contents != []:
+            print(authorBorn.contents[0])
+            print(authorName.contents[0])
+            print(authorBornLocation.contents[0])
+            print(authorDescript.contents[0])
+
+
+writeAuthorDetails()
+
