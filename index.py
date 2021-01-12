@@ -6,7 +6,7 @@ import csv
 urlpage = 'http://quotes.toscrape.com/'
 page = urllib.request.urlopen(urlpage)
 soup = BeautifulSoup(page, 'html.parser')
-
+put = False
 #print(soup)
 
 # tag = soup.span
@@ -26,7 +26,7 @@ tag3 = soup.find_all("span")
 #allTags = soup.find_all('a', class_='tag')
  
 # ecrire dans un fichier
-def ecrireDansFichier(path):
+def ecrireDansFichierMD(path):
         fichier = open('quotes\quote.md',"w")
         fichier.writelines("# Citation | Author | Tags\n"  )
         fichier.writelines("# ------------------------------------------------------------------------- | ----------------------- | -------------------------------------- \n"  )
@@ -40,19 +40,43 @@ def ecrireDansFichier(path):
                 fichier.writelines("\n")
         fichier.writelines("## bye \n"  )
         fichier.close()
- 
-# lire un fichier
-def lireFichier(path):
+
+def lireFichierMD(path):
         fichier = open('quotes\quote.md',"r")
         ligne = fichier.readline()
         ligne = ligne.strip()
-        #print(ligne)
-        #return ligne
+        fichier.close() 
+    
+
+def ecrireDansFichierTXT(path):
+        
+        fichier = open("tags/tag.txt","w")
+        fichier.writelines("List of Tags : \n"  )
+        allTags = soup.find_all('a', class_='tag')
+        tabletag = []  
+        tablereptag = []
+        for tag in allTags:
+                tabletag += tag
+        for element in tabletag:
+                if element not in tablereptag:
+                        tablereptag.append(element)    
+        for truc in tablereptag:
+                fichier.writelines(" - "+truc+ " \n")                
+        fichier.writelines("\n")
+        fichier.writelines("bye bye ! ")
+        fichier.close()
+           
+def lireFichierTXT(path):
+        fichier = open('tags/tag.txt',"r")
+        ligne = fichier.readline()
+        ligne = ligne.strip()
         fichier.close()
  
- 
-ecrireDansFichier("quote.md")
-lireFichier("quote.md")
+ecrireDansFichierMD("quote.md")
+lireFichierMD("quote.md")
+ecrireDansFichierTXT("tag.txt")
+lireFichierTXT("tag.txt")
+
 
 
 
