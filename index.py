@@ -4,6 +4,7 @@ import urllib.request
 import csv
 
 from openpyxl import Workbook
+wb = Workbook()
 
 urlpage = 'http://quotes.toscrape.com/'
 page = urllib.request.urlopen(urlpage)
@@ -74,10 +75,17 @@ def lireFichierTXT(path):
         fichier.close()
 
 def ecrireDansFichierXLS(path):  
-        # fichier = open("tags/tag.txt","w")
+        ws = wb.active
+        ws.title = "Authors"
+        print(wb.sheetnames)
         allAuthors = soup.find_all('small', class_='author')
         tableauth = []  
         tablerepauth = []
+        ws['A1'] = "Nom de l'autheur"
+        ws['B1'] = "Date anniversaire"
+        ws['C1'] = "Lieu naissance"
+        ws['D1'] = "Informations"
+        i=2
         for auth in allAuthors:
                 tableauth += auth
         for auto in tableauth:
@@ -92,17 +100,25 @@ def ecrireDansFichierXLS(path):
                         authorborncity = soupauth.find('span', class_="author-born-location")
                         authordesc = soupauth.find('div', class_="author-description")
                         if authorborndate.contents != []:
-                                print(authorname.contents[0])
-                                print(authorborndate.contents[0])
-                                print(authorborncity.contents[0])
-                                print(authordesc.contents[0])
+                                # print(authorname.contents[0])
+                                # print(authorborndate.contents[0])
+                                # print(authorborncity.contents[0])
+                                # print(authordesc.contents[0])
+                                ws['A'+str(i)] = authorname.contents[0]
+                                ws['B'+str(i)] = authorborndate.contents[0]
+                                ws['C'+str(i)] = authorborncity.contents[0]
+                                ws['D'+str(i)] = authordesc.contents[0]
+                                i+=1
+
+        wb.save('authors/authors.xlsx')
+                             
 
              
 
         
 
-        # fichier.writelines("bye bye ! ")
-        # fichier.close()
+        
+        
            
 # def lireFichierXLS(path):
 #         fichier = open('tags/tag.txt',"r")
